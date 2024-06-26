@@ -26,54 +26,60 @@
             <br><br>¡Te llevamos más allá del destino!.
         </p>
     </header>
+    <main id="main">
 
-    <section class="contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <td>Auto</td>
-                    <td>Modelo</td>
-                    <td>Cantidad dias</td>
-                    <td>Editar</td>
-                    <td>Eliminar</td>
-                </tr>
-            </thead>
-            <tbody id="bodyTablaAlquiler">
+        <section class="contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Auto</td>
+                        <td>Modelo</td>
+                        <td>Cantidad dias</td>
+                        <td>Editar</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody id="bodyTablaAlquiler">
 
-            </tbody>
-        </table>
-        <button class="btnAlquilar">Alquilar</button> 
+                </tbody>
+            </table>
+            <button class="btnAlquilar">Alquilar</button>
 
 
-        <form id="form-alquiler">
-            <div>
-                Auto : <select name="auto" id="auto">
-                    <option value="Ferrari">Ferrari</option>
-                    <option value="Porsche">Porsche</option>
-                    <option value="Tesla">Tesla</option>
-                    <option value="Lamborghini">Lamborghini</option>
-                    <option value="Bugatti">Bugatti</option>
-                    <option value="Rolls-Royce">Rolls-Royce</option>
-                </select>
-            </div>
-            <div>
-                Modelo : <select name="modelo" id="modelo">
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                </select>
-            </div>
-           
-            <div>
-                Cantidad de dias: <input type="number" name="cantidadDias" required id="cantidadDias">
-            </div>
-            <button id="btnForm"></button>
-        </form>
+            <form id="form-alquiler">
+                <div>
+                    Auto : <select name="auto" id="auto">
+                        <option value="Ferrari">Ferrari</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Tesla">Tesla</option>
+                        <option value="Lamborghini">Lamborghini</option>
+                        <option value="Bugatti">Bugatti</option>
+                        <option value="Rolls-Royce">Rolls-Royce</option>
+                    </select>
+                </div>
+                <div>
+                    Modelo : <select name="modelo" id="modelo">
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
 
-        <h2 id="mensaje-alquiler"></h2>
-    </section>
+                <div>
+                    Cantidad de dias: <input type="number" name="cantidadDias" required id="cantidadDias">
+                </div>
+                <button id="btnForm"></button>
+            </form>
+
+            <h2 id="mensaje-alquiler"></h2>
+        </section>
+    </main>
+    <div><video class="ocultarVideo" src="images/video.mp4" loop="true" autoplay controls></video></div>
+    <footer>Luxor Rent Car copyright ©</footer>
+
     <script src="js/alquiler.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
