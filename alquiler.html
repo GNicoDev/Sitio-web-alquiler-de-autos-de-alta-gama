@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="container">
+        <a href="index.html"><img class="logo" src="images/logo.png" alt=""></a>
+        <nav class="contMenu">
+            <img class="iconoMenu" src="images/iconoMenu.png" alt="icono menu">
+            <ul class="oculto">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a class="botones" href="catalogo.html">Catalogo</a></li>
+                <li><a class="botones" href="servicios.html">Servicios</a></li>
+                <li><a class="botones" href="contactos.html">Contactos</a></li>
+                <li><a id="modoOscuro">Modo oscuro</a></li>
+            </ul>
+        </nav>
+        <h1>Luxor Rent Car</h1>
+        <p class="leyenda"> Vivi una experiencia increible con nuestra gama de autos de lujo.
+            <br><br>¡Te llevamos más allá del destino!.
+        </p>
+    </header>
+
+    <section class="contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <td>Auto</td>
+                    <td>Modelo</td>
+                    <td>Cantidad dias</td>
+                    <td>Editar</td>
+                    <td>Eliminar</td>
+                </tr>
+            </thead>
+            <tbody id="bodyTablaAlquiler">
+
+            </tbody>
+        </table>
+        <button class="btnAlquilar">Alquilar</button> 
+
+
+        <form id="form-alquiler">
+            <div>
+                Auto : <select name="auto" id="auto">
+                    <option value="Ferrari">Ferrari</option>
+                    <option value="Porsche">Porsche</option>
+                    <option value="Tesla">Tesla</option>
+                    <option value="Lamborghini">Lamborghini</option>
+                </select>
+            </div>
+            <div>
+                Modelo : <input type="number" name="modelo" required id="modelo">
+            </div>
+            <div>
+                Cantidad de dias: <input type="number" name="cantidadDias" required id="cantidadDias">
+            </div>
+            <button id="btnForm"></button>
+        </form>
+
+        <h2 id="mensaje-alquiler"></h2>
+    </section>
+    <script src="js/alquiler.js"></script>
+</body>
+
+</html>
