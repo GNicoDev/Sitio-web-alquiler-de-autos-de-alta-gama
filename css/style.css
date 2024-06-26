@@ -162,7 +162,10 @@ footer {
 .btnAlquilar{
     margin-top: 20px;
     margin-left: 50px;
+    margin-bottom: 20px;
     width: 100px;
+    font-size: 16px;
+
 }
 
 .btnAlquilar.ocultar{
