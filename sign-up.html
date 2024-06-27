@@ -9,47 +9,64 @@
 </head>
 
 <body>
-    <a href="index.html"><img class="logo" src="images/logo.png" alt=""></a>
+    <header class="container">
+        <a href="index.html"><img class="logo" src="images/logo.png" alt=""></a>
+        <nav class="contMenu">
+            <img class="iconoMenu" src="images/iconoMenu.png" alt="icono menu">
+            <ul class="oculto">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a class="botones" href="catalogo.html">Catalogo</a></li>
+                <li><a class="botones" href="servicios.html">Servicios</a></li>
+                <li><a class="botones" href="contactos.html">Contactos</a></li>
+                <li><a id="modoOscuro">Modo oscuro</a></li>
+            </ul>
+        </nav>
+        <h1>Luxor Rent Car</h1>
+        <p class="leyenda"> Vivi una experiencia increible con nuestra gama de autos de lujo.
+            <br><br>¡Te llevamos más allá del destino!.
+        </p>
+    </header>
+    <main id="main">
 
-    <h1>Luxor Rent Car</h1>
+        <section class="contenedor">
 
-    <section class="contenedor">
-
-        <form id="formSignUp" action="">
-            <h2>Sign-Up</h2>
-            <div>
-                <label for="">Nombre y apellido:</label> <input type="text" name="nombre" required>
-            </div>
-            <div>
-                <label for="">Telefono:</label> <input type="text" name="telefono" required>
-            </div>
-            <div>
-                <label for="">E-mail:</label> <input type="email" name="email" required>
-            </div>
-            <div>
-                <label for="">Password:</label> <input type="password" name="inputPassword" minlength="6" maxlength="10"
-                    required>
-            </div>
-
-            <div class="captcha">
+            <form id="formSignUp" action="">
+                <h2>Sign-Up</h2>
                 <div>
-                    La verificacion es requerida para validar el formulario
+                    <label for="">Nombre y apellido:</label> <input type="text" name="nombre" required>
                 </div>
                 <div>
-                    <label for="" id="labelcaptcha"></label>
+                    <label for="">Telefono:</label> <input type="text" name="telefono" required>
                 </div>
-                <input type="text" name="inputCaptcha">
                 <div>
-                    <button class="btn-signup">Enviar</button>
+                    <label for="">E-mail:</label> <input type="email" name="email" required>
                 </div>
+                <div>
+                    <label for="">Password:</label> <input type="password" name="inputPassword" minlength="6"
+                        maxlength="10" required>
+                </div>
+
+                <div class="captcha">
+                    <div>
+                        La verificacion es requerida para validar el formulario
+                    </div>
+                    <div>
+                        <label for="" id="labelcaptcha"></label>
+                    </div>
+                    <input type="text" name="inputCaptcha">
+                    <div>
+                        <button class="btn-signup">Enviar</button>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <label for="" id="mensaje"></label>
             </div>
-        </form>
-        <div>
-            <label for="" id="mensaje"></label>
-        </div>
-    </section>
-    <a class="inicioSignUp" href="index.html">Inicio</a>
+        </section>
+        <footer>Luxor Rent Car copyright ©</footer>
+    </main>
     <script src="js/sign-up.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
