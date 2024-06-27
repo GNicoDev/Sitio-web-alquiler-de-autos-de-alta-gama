@@ -3,28 +3,28 @@ const mensajeAlquiler = document.querySelector("#mensaje-alquiler")
 let url = "https://66636d9f62966e20ef0c910a.mockapi.io/api/autos"
 
 let formAlquiler = document.querySelector("#form-alquiler")
-let btnForm= document.querySelector("#btnForm")
+let btnForm = document.querySelector("#btnForm")
 let btnAlquilar = document.querySelector(".btnAlquilar")
 let id
 let funcion
 
-formAlquiler.addEventListener("submit", (e)=>{
+formAlquiler.addEventListener("submit", (e) => {
     console.log(funcion)
     e.preventDefault()
-    if(funcion==="agregar")
+    if (funcion === "agregar")
         agregarAlquiler()
     else
         editar()
-} )
+})
 
-document.querySelector(".btnAlquilar").addEventListener("click", ()=>{
-            funcion="agregar"
-           // mostrarFormAlquiler()
-           formAlquiler.classList.add("visible")
-            btnForm.textContent="Añadir"
-            mensajeAlquiler.innerHTML = " "
-            btnAlquilar.classList.add("ocultar")
-        })
+document.querySelector(".btnAlquilar").addEventListener("click", () => {
+    funcion = "agregar"
+    // mostrarFormAlquiler()
+    formAlquiler.classList.add("visible")
+    btnForm.textContent = "Añadir"
+    mensajeAlquiler.innerHTML = " "
+    btnAlquilar.classList.add("ocultar")
+})
 
 /*
 function mostrarFormAlquiler() {
@@ -33,8 +33,8 @@ function mostrarFormAlquiler() {
 } */
 
 async function obtenerDatos() {
-   // const tabla = document.querySelector("#tabla-ofertas")
-   btnAlquilar.classList.remove("ocultar")
+    // const tabla = document.querySelector("#tabla-ofertas")
+    btnAlquilar.classList.remove("ocultar")
     try {
         let res = await fetch(url)
         if (res.ok) {
@@ -51,24 +51,16 @@ async function obtenerDatos() {
                     celda.textContent = objeto[propiedad]
                     fila.appendChild(celda)
                 }
-                const celdaEliminar= document.createElement("td")
-                const celdaEditar= document.createElement("td")
+                const celdaEliminar = document.createElement("td")
+                const celdaEditar = document.createElement("td")
                 const btnEditar = document.createElement("button")
                 const btnEliminar = document.createElement("button")
                 btnEditar.textContent = "Editar"
                 btnEliminar.textContent = "Eliminar"
-                btnEditar.addEventListener("click",()=>{
-                    funcion = "editar"
-                    id = objeto.id
-                    formAlquiler.classList.add("visible")
-                    btnForm.textContent="Editar"
-                    btnAlquilar.classList.add("ocultar")
-                    mensajeAlquiler.innerHTML = " "
-                    document.querySelector("#auto").value =objeto.auto
-                    document.querySelector("#modelo").value =objeto.modelo
-                    document.querySelector("#cantidadDias").value =objeto.cantidadDias
+                btnEditar.addEventListener("click", () => {
+                    mostrarEditarAlquiler(objeto)
                 })
-                btnEliminar.addEventListener("click",(e)=>{
+                btnEliminar.addEventListener("click", (e) => {
                     e.preventDefault()
                     eliminarAlquiler(objeto.id)
                 })
@@ -122,13 +114,13 @@ async function agregarAlquiler() {
 
 async function eliminarAlquiler(id) {
 
-   // let id = document.querySelector("#inputIdEliminar").value
+    // let id = document.querySelector("#inputIdEliminar").value
     try {
         let res = await fetch(`${url}/${id}`, {
             "method": "DELETE",
             "headers": { "Content-type": "application/json" },
         })
-        if (res.status === 200){
+        if (res.status === 200) {
             mensajeAlquiler.innerHTML = "Item eliminado!"
             obtenerDatos()
         }
@@ -142,9 +134,20 @@ async function eliminarAlquiler(id) {
     }
 }
 
-async function editar(){
-  //  e.preventDefault()
-  console.log(id)
+function mostrarEditarAlquiler(objeto){
+    funcion = "editar"
+    id = objeto.id
+    formAlquiler.classList.add("visible")
+    btnForm.textContent = "Editar"
+    btnAlquilar.classList.add("ocultar")
+    mensajeAlquiler.innerHTML = " "
+    document.querySelector("#auto").value = objeto.auto
+    document.querySelector("#modelo").value = objeto.modelo
+    document.querySelector("#cantidadDias").value = objeto.cantidadDias
+}
+
+async function editar() {
+    console.log(id)
     const auto = document.querySelector("#auto").value
     const modelo = document.querySelector("#modelo").value
     const cantidadDias = document.querySelector("#cantidadDias").value
