@@ -5,8 +5,23 @@ let url = "https://66636d9f62966e20ef0c910a.mockapi.io/api/autos"
 let formAlquiler = document.querySelector("#form-alquiler")
 let btnForm = document.querySelector("#btnForm")
 let btnAlquilar = document.querySelector(".btnAlquilar")
+
 let id
 let funcion
+
+let precioFerrari = 150
+let precioBugatti = 180
+let precioLamborghini = 220
+let precioTesla = 90
+let precioRollsRoyce = 190
+let precioPorsche = 110
+
+document.querySelector("#optionFerrari").text += ` $${precioFerrari}/dia`
+document.querySelector("#optionBugatti").text += ` $${precioBugatti}/dia`
+document.querySelector("#optionLamborghini").text += ` $${precioLamborghini}/dia`
+document.querySelector("#optionTesla").text += ` $${precioTesla}/dia`
+document.querySelector("#optionRollsRoyce").text += `$ ${precioRollsRoyce}/dia`
+document.querySelector("#optionPorsche").text += ` $${precioPorsche}/dia`
 
 formAlquiler.addEventListener("submit", (e) => {
     console.log(funcion)
@@ -19,21 +34,14 @@ formAlquiler.addEventListener("submit", (e) => {
 
 document.querySelector(".btnAlquilar").addEventListener("click", () => {
     funcion = "agregar"
-    // mostrarFormAlquiler()
     formAlquiler.classList.add("visible")
     btnForm.textContent = "Añadir"
     mensajeAlquiler.innerHTML = " "
     btnAlquilar.classList.add("ocultar")
 })
 
-/*
-function mostrarFormAlquiler() {
-   // formAlquiler.classList.toggle("ocultarForm")
-    mensajeAlquiler.innerHTML = " "
-} */
 
 async function obtenerDatos() {
-    // const tabla = document.querySelector("#tabla-ofertas")
     btnAlquilar.classList.remove("ocultar")
     try {
         let res = await fetch(url)
@@ -51,6 +59,11 @@ async function obtenerDatos() {
                     celda.textContent = objeto[propiedad]
                     fila.appendChild(celda)
                 }
+                const celdaTotal = document.createElement("td")
+                let total = calcularTotal(objeto)
+                celdaTotal.textContent = `$${total}`
+                fila.appendChild(celdaTotal)
+
                 const celdaEliminar = document.createElement("td")
                 const celdaEditar = document.createElement("td")
                 const btnEditar = document.createElement("button")
@@ -173,6 +186,21 @@ async function editar() {
     } catch (error) {
         console.log(error)
     }
+}
+
+function calcularTotal(objeto){
+    if(objeto.auto === "Ferrari")
+        return precioFerrari * objeto.cantidadDias
+    if(objeto.auto === "Lamborghini")
+        return precioLamborghini * objeto.cantidadDias
+    if(objeto.auto === "Bugatti")
+        return precioBugatti * objeto.cantidadDias
+    if(objeto.auto === "Tesla")
+        return precioTesla * objeto.cantidadDias
+    if(objeto.auto === "Rolls-Royce")
+        return precioRollsRoyce * objeto.cantidadDias
+    if(objeto.auto === "Porsche")
+        return precioPorsche * objeto.cantidadDias
 }
 
 obtenerDatos()
