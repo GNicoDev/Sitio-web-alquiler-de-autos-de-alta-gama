@@ -16,11 +16,14 @@ for (const btn of botones) {
 }
 
 async function mostrarSpa(url) {
+    debugger
     try {
         let res = await fetch(url)
         if (res.ok) {
             const texto = await res.text()
             main.innerHTML = texto
+            if (url === "http://127.0.0.1:5502/sign-in.html")
+                cargarScript("js/sign-in.js")
         }
         else
             main.innerHTML = "No se encontro la pagina"
@@ -53,5 +56,19 @@ function modoOscuro() {
     }
 }
 
+async function cargarScript(src) {
+    // Usa fetch para obtener el script
+    let response = await fetch(src);
+    let scriptText = await response.text();
+
+    // Crea un nuevo script y añade el texto del script
+    let script = document.createElement('script');
+    script.textContent = scriptText;
+
+    // Añade el script al documento
+    document.head.append(script);
+}
+
+//localStorage.clear()
 
 

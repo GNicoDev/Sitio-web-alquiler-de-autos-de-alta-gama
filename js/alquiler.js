@@ -41,7 +41,7 @@ document.querySelector(".btnAlquilar").addEventListener("click", () => {
 })
 
 
-async function obtenerDatos() {
+async function obtenerDatos(user) {
     btnAlquilar.classList.remove("ocultar")
     try {
         let res = await fetch(url)
@@ -51,37 +51,38 @@ async function obtenerDatos() {
             let datos = await res.json()
             console.log(datos)
             datos.forEach(objeto => {
-                console.log(objeto["auto"])
-                const fila = document.createElement("tr")
-                const propiedadAMostrar = ["auto", "modelo", "cantidadDias"]
-                for (const propiedad of propiedadAMostrar) {
-                    const celda = document.createElement("td")
-                    celda.textContent = objeto[propiedad]
-                    fila.appendChild(celda)
-                }
-                const celdaTotal = document.createElement("td")
-                let total = calcularTotal(objeto)
-                celdaTotal.textContent = `$${total}`
-                fila.appendChild(celdaTotal)
+                if (objeto.email === user.email) {
+                    const fila = document.createElement("tr")
+                    const propiedadAMostrar = ["auto", "modelo", "cantidadDias"]
+                    for (const propiedad of propiedadAMostrar) {
+                        const celda = document.createElement("td")
+                        celda.textContent = objeto.carrito[propiedad]
+                        fila.appendChild(celda)
+                    }
+                    const celdaTotal = document.createElement("td")
+                    let total = calcularTotal(objeto)
+                    celdaTotal.textContent = `$${total}`
+                    fila.appendChild(celdaTotal)
 
-                const celdaEliminar = document.createElement("td")
-                const celdaEditar = document.createElement("td")
-                const btnEditar = document.createElement("button")
-                const btnEliminar = document.createElement("button")
-                btnEditar.textContent = "Editar"
-                btnEliminar.textContent = "Eliminar"
-                btnEditar.addEventListener("click", () => {
-                    mostrarEditarAlquiler(objeto)
-                })
-                btnEliminar.addEventListener("click", (e) => {
-                    e.preventDefault()
-                    eliminarAlquiler(objeto.id)
-                })
-                celdaEditar.appendChild(btnEditar)
-                celdaEliminar.appendChild(btnEliminar)
-                fila.appendChild(celdaEditar)
-                fila.appendChild(celdaEliminar)
-                tablaBody.appendChild(fila)
+                    const celdaEliminar = document.createElement("td")
+                    const celdaEditar = document.createElement("td")
+                    const btnEditar = document.createElement("button")
+                    const btnEliminar = document.createElement("button")
+                    btnEditar.textContent = "Editar"
+                    btnEliminar.textContent = "Eliminar"
+                    btnEditar.addEventListener("click", () => {
+                        mostrarEditarAlquiler(objeto)
+                    })
+                    btnEliminar.addEventListener("click", (e) => {
+                        e.preventDefault()
+                        eliminarAlquiler(objeto.id)
+                    })
+                    celdaEditar.appendChild(btnEditar)
+                    celdaEliminar.appendChild(btnEliminar)
+                    fila.appendChild(celdaEditar)
+                    fila.appendChild(celdaEliminar)
+                    tablaBody.appendChild(fila)
+                }
             });
         }
         else {
@@ -147,7 +148,7 @@ async function eliminarAlquiler(id) {
     }
 }
 
-function mostrarEditarAlquiler(objeto){
+function mostrarEditarAlquiler(objeto) {
     funcion = "editar"
     id = objeto.id
     formAlquiler.classList.add("visible")
@@ -188,19 +189,25 @@ async function editar() {
     }
 }
 
-function calcularTotal(objeto){
-    if(objeto.auto === "Ferrari")
-        return precioFerrari * objeto.cantidadDias
-    if(objeto.auto === "Lamborghini")
-        return precioLamborghini * objeto.cantidadDias
-    if(objeto.auto === "Bugatti")
-        return precioBugatti * objeto.cantidadDias
-    if(objeto.auto === "Tesla")
-        return precioTesla * objeto.cantidadDias
-    if(objeto.auto === "Rolls-Royce")
-        return precioRollsRoyce * objeto.cantidadDias
-    if(objeto.auto === "Porsche")
-        return precioPorsche * objeto.cantidadDias
+function calcularTotal(objeto) {
+
+    console.log(objeto.carrito.cantidadDias)
+    if (objeto.carrito.auto === "Ferrari")
+        return precioFerrari * objeto.carrito.cantidadDias
+    if (objeto.carrito.auto === "Lamborghini")
+        return precioLamborghini * objeto.carrito.cantidadDias
+    if (objeto.carrito.auto === "Bugatti")
+        return precioBugatti * objeto.carrito.cantidadDias
+    if (objeto.carrito.auto === "Tesla")
+        return precioTesla * objeto.carrito.cantidadDias
+    if (objeto.carrito.auto === "Rolls-Royce")
+        return precioRollsRoyce * objeto.carrito.cantidadDias
+    if (objeto.carrito.auto === "Porsche")
+        return precioPorsche * objeto.carrito.cantidadDias
 }
 
-obtenerDatos()
+let user = JSON.parse(localStorage.getItem('user'))
+if (user)
+    obtenerDatos(user)
+else
+    mensajeAlquiler.textContent = "Debes iniciar sesion para utilizar nuestros servicios"

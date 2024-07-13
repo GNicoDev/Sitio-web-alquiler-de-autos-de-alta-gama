@@ -2,6 +2,8 @@
 let form = document.querySelector("#formSignUp")
 form.addEventListener("submit", enviarSignup)
 
+let url = "https://66636d9f62966e20ef0c910a.mockapi.io/api/autos"
+
 let captchaGenerado = generarCaptcha();
 let labelcaptcha = document.querySelector("#labelcaptcha")
 labelcaptcha.innerHTML = captchaGenerado
@@ -16,7 +18,7 @@ function generarCaptcha() {
     return captcha;
 }
 
-function enviarSignup(e) {
+async function enviarSignup(e) {
     e.preventDefault()
 
     let formData = new FormData(form)
@@ -28,6 +30,29 @@ function enviarSignup(e) {
         form.innerHTML = ""        // limpiar formulario
         mensaje.innerHTML = "El formulado se ha enviado con exito!! Gracias por confiar en Luxor Rent Car"
         mensaje.style.color = "green"
+        let nuevoUsuario = {
+            "email": formData.get('email'),
+            "password": formData.get('inputPassword'),
+            "nombre": formData.get('nombre'),
+            "telefono": formData.get('telefono'),
+        }
+        try {
+            let res = await fetch(url, {
+                "method": "POST",
+                "headers": { "Content-type": "application/json" },
+                "body": JSON.stringify(nuevoUsuario)
+            })
+            if (res.status === 201) {
+                mensajeAlquiler.innerHTML = "Nuevo alquiler creado"
+                obtenerDatos()
+                formAlquiler.classList.remove("visible")
+
+            }
+            else
+                mensajeAlquiler.innerHTML = "Hubo un error al cargar los datos"
+        } catch (error) {
+
+        }
     }
     else {
         mensaje.innerHTML = "El captcha no coincide. Presione F5 para ingresar nuevamente los datos"
