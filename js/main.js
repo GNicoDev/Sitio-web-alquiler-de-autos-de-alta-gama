@@ -1,11 +1,25 @@
 document.querySelector(".iconoMenu").addEventListener("click", desplegarMenu)
 document.querySelector("#modoOscuro").addEventListener("click", modoOscuro)
+
 let URLactual = window.location.href
+
 const main = document.querySelector("#main")
 main.classList.remove("contenedor")
 
-let botones = document.querySelectorAll(".botones")
+const btnSignIn = document.querySelector("#btn-signIn")
+let usuario = JSON.parse(localStorage.getItem('user'))
 
+const mensaje = document.querySelector("#mensaje")
+
+if (URLactual != "http://127.0.0.1:5502/alquiler.html" && URLactual != "http://127.0.0.1:5502/sign-up.html") {
+    btnSignIn.addEventListener("click", sesion)
+    if (usuario){
+        btnSignIn.innerHTML = "Cerrar"
+        mensaje.innerHTML = `Sesion iniciada por ${usuario.nombre}`
+    }
+}
+
+let botones = document.querySelectorAll(".botones")
 for (const btn of botones) {
     btn.addEventListener("click", (e) => {
         e.preventDefault()
@@ -16,14 +30,16 @@ for (const btn of botones) {
 }
 
 async function mostrarSpa(url) {
-    debugger
     try {
         let res = await fetch(url)
         if (res.ok) {
             const texto = await res.text()
             main.innerHTML = texto
-            if (url === "http://127.0.0.1:5502/sign-in.html")
+            if (url === "sign-in.html") {
+                document.querySelector("video").classList.add("ocultarVideo")
+                main.classList.add("contenedor")
                 cargarScript("js/sign-in.js")
+            }
         }
         else
             main.innerHTML = "No se encontro la pagina"
@@ -39,8 +55,7 @@ function desplegarMenu() {
 
 function modoOscuro() {
     let li = document.querySelector("#modoOscuro").innerHTML
-    console.log(li)
-    console.log(URLactual)
+
     document.querySelector("body").classList.toggle("modoOscuroClaro")
     document.querySelector("#main").classList.toggle("modoOscuroContMain")
 
@@ -69,6 +84,17 @@ async function cargarScript(src) {
     document.head.append(script);
 }
 
-//localStorage.clear()
+function sesion() {
+    if (usuario) {
+        btnSignIn.innerHTML = "Sign-in"
+        localStorage.clear()
+        mensaje.innerHTML = ""
+        location.reload()
+    }
+    else {
+        mostrarSpa("sign-in.html")
+    }
+
+}
 
 

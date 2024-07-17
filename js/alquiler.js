@@ -52,36 +52,41 @@ async function obtenerDatos(user) {
             console.log(datos)
             datos.forEach(objeto => {
                 if (objeto.email === user.email) {
+                    let carrito = objeto.carrito
+                    console.log(carrito)
+                    carrito.forEach(element => {
                     const fila = document.createElement("tr")
                     const propiedadAMostrar = ["auto", "modelo", "cantidadDias"]
-                    for (const propiedad of propiedadAMostrar) {
-                        const celda = document.createElement("td")
-                        celda.textContent = objeto.carrito[propiedad]
-                        fila.appendChild(celda)
-                    }
-                    const celdaTotal = document.createElement("td")
-                    let total = calcularTotal(objeto)
-                    celdaTotal.textContent = `$${total}`
-                    fila.appendChild(celdaTotal)
-
-                    const celdaEliminar = document.createElement("td")
-                    const celdaEditar = document.createElement("td")
-                    const btnEditar = document.createElement("button")
-                    const btnEliminar = document.createElement("button")
-                    btnEditar.textContent = "Editar"
-                    btnEliminar.textContent = "Eliminar"
-                    btnEditar.addEventListener("click", () => {
-                        mostrarEditarAlquiler(objeto)
-                    })
-                    btnEliminar.addEventListener("click", (e) => {
-                        e.preventDefault()
-                        eliminarAlquiler(objeto.id)
-                    })
-                    celdaEditar.appendChild(btnEditar)
-                    celdaEliminar.appendChild(btnEliminar)
-                    fila.appendChild(celdaEditar)
-                    fila.appendChild(celdaEliminar)
-                    tablaBody.appendChild(fila)
+                        for (const propiedad of propiedadAMostrar) {
+                            const celda = document.createElement("td")
+                            celda.textContent = element[propiedad]
+                            fila.appendChild(celda)
+                        }
+                        const celdaTotal = document.createElement("td")
+                        let total = calcularTotal(element)
+                        celdaTotal.textContent = `$${total}`
+                        fila.appendChild(celdaTotal)
+    
+                        const celdaEliminar = document.createElement("td")
+                        const celdaEditar = document.createElement("td")
+                        const btnEditar = document.createElement("button")
+                        const btnEliminar = document.createElement("button")
+                        btnEditar.textContent = "Editar"
+                        btnEliminar.textContent = "Eliminar"
+                        btnEditar.addEventListener("click", () => {
+                            mostrarEditarAlquiler(element)
+                        })
+                        btnEliminar.addEventListener("click", (e) => {
+                            e.preventDefault()
+                            eliminarAlquiler(element.idAlquiler)
+                        })
+                        celdaEditar.appendChild(btnEditar)
+                        celdaEliminar.appendChild(btnEliminar)
+                        fila.appendChild(celdaEditar)
+                        fila.appendChild(celdaEliminar)
+                        tablaBody.appendChild(fila)
+                    });
+                    
                 }
             });
         }
@@ -97,25 +102,40 @@ async function obtenerDatos(user) {
 }
 
 async function agregarAlquiler() {
+    debugger
     //e.preventDefault()
     let data = new FormData(formAlquiler)
     mensajeAlquiler.innerHTML = " "
+    let carrito = user.carrito
+    console.log(carrito) 
+    let nuevoId
+    if (carrito.length != 0){
+        let ultimoObjeto = carrito[carrito.length - 1];
+        nuevoId = ultimoObjeto.idAlquiler + 1
+        console.log(nuevoId)
+    }
+    else
+        nuevoId = 0
+   
     const nuevoAlquiler = {
+        idAlquiler: nuevoId,
         auto: data.get("auto"),
         modelo: data.get("modelo"),
         cantidadDias: data.get("cantidadDias"),
 
     }
-    console.log(nuevoAlquiler)
+    user.carrito.push(nuevoAlquiler)
+    localStorage.setItem('user', JSON.stringify(user))
+    console.log(user.carrito)
     try {
-        let res = await fetch(url, {
-            "method": "POST",
-            "headers": { "Content-type": "application/json" },
-            "body": JSON.stringify(nuevoAlquiler)
+        let res = await fetch(`${url}/${user.id}`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user),
         })
-        if (res.status === 201) {
+        if (res.ok) {
             mensajeAlquiler.innerHTML = "Nuevo alquiler creado"
-            obtenerDatos()
+            obtenerDatos(user)
             formAlquiler.classList.remove("visible")
 
         }
@@ -126,15 +146,22 @@ async function agregarAlquiler() {
     }
 }
 
-async function eliminarAlquiler(id) {
-
+async function eliminarAlquiler(idAEliminar) {
+    debugger
     // let id = document.querySelector("#inputIdEliminar").value
+    let carrito = user.carrito
+    console.log(carrito)
+    carrito = carrito.filter(objeto => 
+        objeto.idAlquiler != idAEliminar
+    )
+    console.log(carrito)
     try {
-        let res = await fetch(`${url}/${id}`, {
-            "method": "DELETE",
+        let res = await fetch(`${url}/${user.id}`, {
+            "method": "PUT",
             "headers": { "Content-type": "application/json" },
+            "body" : JSON.stringify(user)
         })
-        if (res.status === 200) {
+        if (res.ok) {
             mensajeAlquiler.innerHTML = "Item eliminado!"
             obtenerDatos()
         }
@@ -148,38 +175,52 @@ async function eliminarAlquiler(id) {
     }
 }
 
-function mostrarEditarAlquiler(objeto) {
+function mostrarEditarAlquiler(alquilerAEditar) {
     funcion = "editar"
-    id = objeto.id
+    id = alquilerAEditar.idAlquiler
     formAlquiler.classList.add("visible")
     btnForm.textContent = "Editar"
     btnAlquilar.classList.add("ocultar")
     mensajeAlquiler.innerHTML = " "
-    document.querySelector("#auto").value = objeto.auto
-    document.querySelector("#modelo").value = objeto.modelo
-    document.querySelector("#cantidadDias").value = objeto.cantidadDias
+
+    document.querySelector("#auto").value = alquilerAEditar.auto
+    document.querySelector("#modelo").value = alquilerAEditar.modelo
+    document.querySelector("#cantidadDias").value = alquilerAEditar.cantidadDias
 }
 
 async function editar() {
-    console.log(id)
+    debugger
     const auto = document.querySelector("#auto").value
     const modelo = document.querySelector("#modelo").value
     const cantidadDias = document.querySelector("#cantidadDias").value
     const alquilerEditado = {
+        idAlquiler: id,
         auto: auto,
         modelo: modelo,
         cantidadDias: cantidadDias
     }
-    console.log(alquilerEditado)
+    let carrito = user.carrito
+    console.log(user)
+    console.log(user.carrito)
+    for (const item of carrito) {
+        if (item.idAlquiler === id){
+            for (const key in alquilerEditado) {
+                item[key] = alquilerEditado[key];
+            }
+            localStorage.setItem('user', JSON.stringify(user))
+            break
+        }
+    }
+    console.log(user.carrito)
     try {
-        let res = await fetch(`${url}/${id}`, {
+        let res = await fetch(`${url}/${user.id}`, {
             "method": "PUT",
             "headers": { "Content-type": "application/json" },
-            "body": JSON.stringify(alquilerEditado)
+            "body": JSON.stringify(user)
         })
         if (res.ok === true) {
             mensajeAlquiler.innerHTML = "Alquiler editado correctamente"
-            obtenerDatos()
+            obtenerDatos(user)
             formAlquiler.classList.remove("visible")
         }
         else
@@ -189,24 +230,26 @@ async function editar() {
     }
 }
 
-function calcularTotal(objeto) {
+function calcularTotal(item) {
 
-    console.log(objeto.carrito.cantidadDias)
-    if (objeto.carrito.auto === "Ferrari")
-        return precioFerrari * objeto.carrito.cantidadDias
-    if (objeto.carrito.auto === "Lamborghini")
-        return precioLamborghini * objeto.carrito.cantidadDias
-    if (objeto.carrito.auto === "Bugatti")
-        return precioBugatti * objeto.carrito.cantidadDias
-    if (objeto.carrito.auto === "Tesla")
-        return precioTesla * objeto.carrito.cantidadDias
-    if (objeto.carrito.auto === "Rolls-Royce")
-        return precioRollsRoyce * objeto.carrito.cantidadDias
-    if (objeto.carrito.auto === "Porsche")
-        return precioPorsche * objeto.carrito.cantidadDias
+    console.log(item.cantidadDias)
+    if (item.auto === "Ferrari")
+        return precioFerrari * item.cantidadDias
+    if (item.auto === "Lamborghini")
+        return precioLamborghini * item.cantidadDias
+    if (auto === "Bugatti")
+        return precioBugatti * item.cantidadDias
+    if (item.auto === "Tesla")
+        return precioTesla * item.cantidadDias
+    if (item.auto === "Rolls-Royce")
+        return precioRollsRoyce * item.cantidadDias
+    if (item.auto === "Porsche")
+        return precioPorsche * item.cantidadDias
+    return ""
 }
 
 let user = JSON.parse(localStorage.getItem('user'))
+console.log(user)
 if (user)
     obtenerDatos(user)
 else

@@ -35,6 +35,7 @@ async function enviarSignup(e) {
             "password": formData.get('inputPassword'),
             "nombre": formData.get('nombre'),
             "telefono": formData.get('telefono'),
+            "carrito" : []
         }
         try {
             let res = await fetch(url, {
