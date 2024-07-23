@@ -106,8 +106,6 @@ async function agregarAlquiler() {
     //e.preventDefault()
     let data = new FormData(formAlquiler)
     mensajeAlquiler.innerHTML = " "
-    let carrito = user.carrito
-    console.log(carrito) 
     let nuevoId
     if (carrito.length != 0){
         let ultimoObjeto = carrito[carrito.length - 1];
@@ -147,14 +145,11 @@ async function agregarAlquiler() {
 }
 
 async function eliminarAlquiler(idAEliminar) {
-    debugger
-    // let id = document.querySelector("#inputIdEliminar").value
-    let carrito = user.carrito
-    console.log(carrito)
-    carrito = carrito.filter(objeto => 
+    
+    user.carrito = user.carrito.filter(objeto => 
         objeto.idAlquiler != idAEliminar
     )
-    console.log(carrito)
+   
     try {
         let res = await fetch(`${url}/${user.id}`, {
             "method": "PUT",
@@ -163,7 +158,7 @@ async function eliminarAlquiler(idAEliminar) {
         })
         if (res.ok) {
             mensajeAlquiler.innerHTML = "Item eliminado!"
-            obtenerDatos()
+            obtenerDatos(user)
         }
         else
             mensajeAlquiler.innerHTML = "Hubo un error al cargar los datos"
@@ -189,7 +184,6 @@ function mostrarEditarAlquiler(alquilerAEditar) {
 }
 
 async function editar() {
-    debugger
     const auto = document.querySelector("#auto").value
     const modelo = document.querySelector("#modelo").value
     const cantidadDias = document.querySelector("#cantidadDias").value
@@ -199,19 +193,16 @@ async function editar() {
         modelo: modelo,
         cantidadDias: cantidadDias
     }
-    let carrito = user.carrito
-    console.log(user)
-    console.log(user.carrito)
-    for (const item of carrito) {
+    
+    for (const item of user.carrito) {
         if (item.idAlquiler === id){
-            for (const key in alquilerEditado) {
-                item[key] = alquilerEditado[key];
+            for (const atributo in alquilerEditado) {
+                item[atributo] = alquilerEditado[atributo];
             }
             localStorage.setItem('user', JSON.stringify(user))
             break
         }
     }
-    console.log(user.carrito)
     try {
         let res = await fetch(`${url}/${user.id}`, {
             "method": "PUT",
@@ -232,12 +223,11 @@ async function editar() {
 
 function calcularTotal(item) {
 
-    console.log(item.cantidadDias)
     if (item.auto === "Ferrari")
         return precioFerrari * item.cantidadDias
     if (item.auto === "Lamborghini")
         return precioLamborghini * item.cantidadDias
-    if (auto === "Bugatti")
+    if (item.auto === "Bugatti")
         return precioBugatti * item.cantidadDias
     if (item.auto === "Tesla")
         return precioTesla * item.cantidadDias
@@ -250,7 +240,10 @@ function calcularTotal(item) {
 
 let user = JSON.parse(localStorage.getItem('user'))
 console.log(user)
-if (user)
+if (user){
     obtenerDatos(user)
-else
+}
+else{
     mensajeAlquiler.textContent = "Debes iniciar sesion para utilizar nuestros servicios"
+    btnAlquilar.classList.add("ocultar")
+}
