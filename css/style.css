@@ -132,6 +132,27 @@ footer {
     box-shadow: 5px 5px 5px #7c7c7c;
 }
 
+.contenedorMensaje{
+    font-family: sans-serif;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: rgb(247, 247, 247, 0.8);
+    box-shadow: 5px 5px 5px #7c7c7c;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 200px;
+    padding: 3px ;
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+#mensaje{
+    font-weight:bolder;
+    color: rgb(61, 111, 61);
+    border-color: black;
+}
+
 #main h2 {
     margin-bottom: 30px;
 }
@@ -171,8 +192,6 @@ footer {
 }
 
 h5{
-    margin-top: 10px;
-    margin-left: 30px;
     color: rgb(83, 121, 83);
 }
 
@@ -337,6 +356,14 @@ table td {
         background-color: #a2a2a2;
         opacity: 0.9;
         box-shadow: 5px 5px 5px #212121;
+    }
+
+    .contenedorMensaje{
+        font-size: 14px;
+        width: 300px;
+        opacity: 0.9;
+        margin-top: 20px;
+
     }
 
     #main {

@@ -16,7 +16,11 @@ if (URLactual != "http://127.0.0.1:5502/alquiler.html" && URLactual != "http://1
     if (usuario){
         btnSignIn.innerHTML = "Cerrar"
         mensaje.innerHTML = `Sesion iniciada por ${usuario.nombre}`
+        mensaje.classList.remove("oculto")
     }
+    else
+        mensaje.classList.add("oculto")
+
 }
 
 let botones = document.querySelectorAll(".botones")
@@ -85,6 +89,7 @@ async function cargarScript(src) {
 }
 
 function sesion() {
+
     if (usuario) {
         btnSignIn.innerHTML = "Sign-in"
         localStorage.clear()
