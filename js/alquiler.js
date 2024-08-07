@@ -107,8 +107,8 @@ async function agregarAlquiler() {
     let data = new FormData(formAlquiler)
     mensajeAlquiler.innerHTML = " "
     let nuevoId
-    if (carrito.length != 0){
-        let ultimoObjeto = carrito[carrito.length - 1];
+    if (user.carrito.length != 0){
+        let ultimoObjeto = user.carrito[user.carrito.length - 1];
         nuevoId = ultimoObjeto.idAlquiler + 1
         console.log(nuevoId)
     }
